@@ -1,4 +1,4 @@
-﻿CREATE PROC FI_SP_IncBeneficiarioV1
+﻿CREATE PROC FI_SP_IncBeneficiario
     @NOME          VARCHAR (50),
 	@CPF		   VARCHAR (16),
     @IDCLIENTE     VARCHAR (15)

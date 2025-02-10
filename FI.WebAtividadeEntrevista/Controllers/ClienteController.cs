@@ -26,15 +26,12 @@ namespace WebAtividadeEntrevista.Controllers
             {
                 cpf = cpf.Replace(".", "").Replace("-", "");
 
-                // Verifica se o CPF tem 11 caracteres
                 if (cpf.Length != 11)
                     return false;
 
-                // Verifica se o CPF é uma sequência de números iguais
                 if (cpf.All(c => c == cpf[0]))
                     return false;
 
-                // Verifica o primeiro dígito verificador
                 int soma = 0;
                 for (int i = 0; i < 9; i++)
                 {
@@ -46,7 +43,6 @@ namespace WebAtividadeEntrevista.Controllers
                 if (int.Parse(cpf[9].ToString()) != digito1)
                     return false;
 
-                // Verifica o segundo digito verificador
                 soma = 0;
                 for (int i = 0; i < 10; i++)
                 {

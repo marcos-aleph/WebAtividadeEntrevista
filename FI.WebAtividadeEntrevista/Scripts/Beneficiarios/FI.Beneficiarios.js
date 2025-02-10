@@ -1,27 +1,28 @@
 ﻿$(document).ready(function () {
     $('#formCadastroBeneficiario').submit(function (e) {
-        var urlPost = "/BeneficiarioController/Incluir";
         e.preventDefault();
         $.ajax({
             url: urlPost,
             method: "POST",
             data: {
-                "NOME": $(this).find("#Nome").val(),
-                "IDCLIENTE": $(this).find("#IDCLIENTE").val(),
-                "CPF": $(this).find("#CPF").val(),
+                "NOME": $(this).find("#NomeBeneficiario").val(),
+                "CPF": $(this).find("#CPFBeneficiario").val()
             },
-            error: function (r) {
-                if (r.status == 400)
-                    ModalDialog("Ocorreu um erro", r.responseJSON);
-                else if (r.status == 500)
-                    ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
-            },
-            success: function (r) {
-                ModalDialog("Sucesso!", r);
-                $("#formCadastroBeneficiario")[0].reset();
-            }
+            error:
+                function (r) {
+                    if (r.status == 400)
+                        ModalDialog("Ocorreu um erro", r.responseJSON);
+                    else if (r.status == 500)
+                        ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
+                },
+            success:
+                function (r) {
+                    ModalDialog("Sucesso!", r)
+                    $("#formCadastro")[0].reset();
+                }
         });
-    });
+    })
+
 })
 
 function ModalDialog(titulo, texto) {

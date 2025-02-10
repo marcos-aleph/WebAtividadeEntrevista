@@ -6,16 +6,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FI.AtividadeEntrevista.DML;
+using System.Reflection;
+using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 
 namespace WebAtividadeEntrevista.Controllers
 {
-    public class BenefiarioController : Controller
+    public class BeneficiarioController : Controller
     {
         public ActionResult Index()
         {
             return View();
         }
-
 
         public ActionResult Incluir()
         {
@@ -26,15 +28,12 @@ namespace WebAtividadeEntrevista.Controllers
         {
             cpf = cpf.Replace(".", "").Replace("-", "");
 
-            // Verifica se o CPF tem 11 caracteres
             if (cpf.Length != 11)
                 return false;
 
-            // Verifica se o CPF é uma sequência de números iguais
             if (cpf.All(c => c == cpf[0]))
                 return false;
 
-            // Verifica o primeiro dígito verificador
             int soma = 0;
             for (int i = 0; i < 9; i++)
             {
@@ -46,7 +45,6 @@ namespace WebAtividadeEntrevista.Controllers
             if (int.Parse(cpf[9].ToString()) != digito1)
                 return false;
 
-            // Verifica o segundo digito verificador
             soma = 0;
             for (int i = 0; i < 10; i++)
             {
@@ -65,9 +63,9 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Incluir(BeneficiarioModel model)
         {
             BoBeneficiario bo = new BoBeneficiario();
-            bool cpfExistente = bo.VerificarExistencia(model.CPF);
+            bool cpfExistente = bo.VerificarExistencia(model.CPFBeneficiario);
 
-            if (!ValidarCpf(model.CPF))
+            if (!ValidarCpf(model.CPFBeneficiario))
             {
                 Response.StatusCode = 400;
                 return Json("O CPF informado é inválido.");
@@ -93,9 +91,8 @@ namespace WebAtividadeEntrevista.Controllers
 
                 model.Id = bo.Incluir(new Beneficiario()
                 {
-                    Nome = model.Nome,
-                    CPF = model.CPF,
-                    Id = model.Id,
+                    Nome = model.NomeBeneficiario,
+                    CPF = model.CPFBeneficiario,
                     IDCLIENTE = model.IdCliente
 
                 });
@@ -123,10 +120,11 @@ namespace WebAtividadeEntrevista.Controllers
             {
                 bo.Alterar(new Beneficiario()
                 {
-                    Id = model.Id,
                     IDCLIENTE = model.IdCliente,
-                    Nome = model.Nome,
-                    CPF = model.CPF
+                    Nome = model.NomeBeneficiario,
+                    CPF = model.CPFBeneficiario,
+                    Id = model.Id
+
                 });
 
                 return Json("Cadastro alterado com sucesso");
@@ -144,10 +142,11 @@ namespace WebAtividadeEntrevista.Controllers
             {
                 model = new BeneficiarioModel()
                 {
-                    Id = beneficiario.Id,
                     IdCliente = beneficiario.IDCLIENTE,
-                    Nome = beneficiario.Nome,
-                    CPF = beneficiario.CPF
+                    NomeBeneficiario = beneficiario.CPF,
+                    CPFBeneficiario = beneficiario.CPF,
+                    Id = beneficiario.Id
+
                 };
 
 
@@ -157,30 +156,27 @@ namespace WebAtividadeEntrevista.Controllers
         }
 
         [HttpPost]
-        public JsonResult BeneficiarioList(int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        public JsonResult BeneficiarioList()
         {
             try
             {
-                int qtd = 0;
-                string campo = string.Empty;
-                string crescente = string.Empty;
-                string[] array = jtSorting.Split(' ');
+                Models.BeneficiarioModel model = null;
+                model = new Models.BeneficiarioModel();
 
-                if (array.Length > 0)
-                    campo = array[0];
 
-                if (array.Length > 1)
-                    crescente = array[1];
+                List<Beneficiario> clientes = new BoBeneficiario().Listar(model.Id);
 
-                List<Beneficiario> beneficiario = new BoBeneficiario().Pesquisa(jtStartIndex, jtPageSize, campo, crescente.Equals("ASC", StringComparison.InvariantCultureIgnoreCase), out qtd);
-
-                //Return result to jTable
-                return Json(new { Result = "OK", Records = beneficiario, TotalRecordCount = qtd });
+                return Json(new { Result = "OK", Records = clientes });
             }
             catch (Exception ex)
             {
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
+ 
         }
+
+
     }
+
+
 }

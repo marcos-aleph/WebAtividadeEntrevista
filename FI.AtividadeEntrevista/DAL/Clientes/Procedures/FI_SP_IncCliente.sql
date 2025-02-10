@@ -1,4 +1,7 @@
-﻿CREATE PROC FI_SP_IncClienteV2
+﻿/*
+Adicionado campo CPF
+*/
+CREATE PROC FI_SP_IncClienteV3
     @NOME          VARCHAR (50) ,
     @SOBRENOME     VARCHAR (255),
     @NACIONALIDADE VARCHAR (50) ,

@@ -1,42 +1,29 @@
-﻿
-$(document).ready(function () {
-
-    if (document.getElementById("gridClientes"))
-        $('#gridBeneficiarios').jtable({
-            title: 'Beneficiarios',
-            paging: true, //Enable paging
-            pageSize: 5, //Set page size (default: 10)
-            sorting: true, //Enable sorting
-            defaultSorting: 'Nome ASC', //Set default sorting
-            actions: {
-                listAction: urlClienteList,
-            },
-            fields: {
-                Nome: {
-                    title: 'Nome',
-                    width: '50%'
-                },
-                Email: {
-                    title: 'CPF',
-                    width: '35%'
-                },
-                Alterar: {
-                    title: '',
-                    display: function (data) {
-                        return '<button onclick="window.location.href=\'' + urlAlteracao + '/' + data.record.Id + '\'" class="btn btn-primary btn-sm">Alterar</button>';
-                    }
-                },
-                Excluir: {
-                    title: '',
-                        display: function (data) {
-                        return '<button onclick="window.location.href=\'' + urlAlteracao + '/' + data.record.Id + '\'" class="btn btn-primary btn-sm">Excluir</button>';
-                        }
-
+﻿$(document).ready(function () {
+    $('#gridBeneficiarios').dataTable({
+        ajax: {
+            url: '/Beneficiario/BeneficiarioList', 
+            type: 'POST',
+            dataSrc: function (json) {
+                if (json.Result === "OK") {
+                    return json.Records;
+                } else {
+                    alert("Erro: " + json.Message);
+                    return [];
                 }
             }
-        });
-
-    //Load student list from server
-    if (document.getElementById("gridBeneficiarios"))
-        $('#gridBeneficiarios').jtable('load');
-})
+        },
+        columns: [
+            { data: 'NomeBeneficiario' },
+            { data: 'CPFBeneficiario' },
+            {
+                data: 'Id',
+                render: function (data, type, row) {
+                    return `
+                        <a href="/ControllerName/Editar/${data}" class="btn btn-warning btn-sm">Alterar</a>
+                        <a href="/ControllerName/Excluir/${data}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a>
+                    `;
+                }
+            }
+        ]
+    });
+});

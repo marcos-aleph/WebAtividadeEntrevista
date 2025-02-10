@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     if (document.getElementById("gridClientes"))
         $('#gridClientes').jtable({

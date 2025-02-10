@@ -29,6 +29,7 @@ $(document).ready(function () {
                 "Estado": $(this).find("#Estado").val(),
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
+                "CPF": $(this).find("#CPF").val(),
                 "Telefone": $(this).find("#Telefone").val()
             },
             error:

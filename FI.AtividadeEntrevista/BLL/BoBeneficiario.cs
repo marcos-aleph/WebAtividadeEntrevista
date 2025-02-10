@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FI.AtividadeEntrevista.DML;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,16 +52,16 @@ namespace FI.AtividadeEntrevista.BLL
         }
 
         /// <summary>
-        /// Lista os beneficiario
+        /// Lista os beneficiarios
         /// </summary>
-        public List<DML.Beneficiario> Listar()
+        public List<DML.Beneficiario> Listar(long id)
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
             return cli.Listar();
         }
 
         /// <summary>
-        /// Lista os Beneficiario
+        /// Lista os Beneficiarios
         /// </summary>
         public List<DML.Beneficiario> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
@@ -77,6 +78,11 @@ namespace FI.AtividadeEntrevista.BLL
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
             return cli.VerificarExistencia(CPF);
+        }
+
+        public void Listar(Beneficiario beneficiario)
+        {
+            throw new NotImplementedException();
         }
     }
 }

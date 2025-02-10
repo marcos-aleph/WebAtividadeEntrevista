@@ -1,4 +1,7 @@
-﻿CREATE PROC FI_SP_ConsCliente
+﻿/*
+Adicionado campo CPF
+*/
+CREATE PROC FI_SP_ConsClienteV2
 	@ID BIGINT
 AS
 BEGIN

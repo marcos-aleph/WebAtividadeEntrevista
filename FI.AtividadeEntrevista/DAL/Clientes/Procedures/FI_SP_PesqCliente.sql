@@ -1,4 +1,7 @@
-﻿CREATE PROC FI_SP_PesqCliente
+﻿/*
+Adicionado campo CPF para pesquisa
+*/
+CREATE PROC FI_SP_PesqClienteV2
 	@iniciarEm int,
 	@quantidade int,
 	@campoOrdenacao varchar(200),

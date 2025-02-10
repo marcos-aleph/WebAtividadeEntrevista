@@ -18,14 +18,14 @@ namespace WebAtividadeEntrevista.Models
         /// Nome
         /// </summary>
         [Required]
-        public string Nome { get; set; }
+        public string NomeBeneficiario { get; set; }
 
         /// <summary>
         /// CPF
         /// </summary>
         [MaxLength(14)]
         [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$", ErrorMessage = "Digite um CPF válido")]
-        public string CPF { get; set; }
+        public string CPFBeneficiario { get; set; }
 
         [Required]
         public long IdCliente { get; set; }
